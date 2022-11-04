@@ -3,11 +3,13 @@ const login = require('./login');
 const getCurrent = require('./getCurrent');
 const logout = require('./logout');
 const updateSubscribeStatus = require("./updateSubscribeStatus");
+const updateAvatar = require("./updateAvatar");
 
 module.exports = {
 	register,
 	login,
 	getCurrent,
 	logout,
-	updateSubscribeStatus
+	updateSubscribeStatus,
+	updateAvatar,
 }

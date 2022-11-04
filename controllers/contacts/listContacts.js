@@ -1,5 +1,5 @@
 const { Contact } = require('../../models/contacts/contact');
-const { report } = require('../../routes/api/auth');
+const { report } = require('../../routes/api/users');
 
 const listContacts = async (req, res) => {
   const { _id: owner } = req.user;
