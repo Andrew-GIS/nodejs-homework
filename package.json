@@ -19,6 +19,7 @@
     "gravatar": "^1.8.2",
     "jimp": "^0.16.2",
     "joi": "^17.6.2",
+    "joi-image-extension": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.5",
     "morgan": "1.10.0",

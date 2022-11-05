@@ -25,6 +25,7 @@ router.patch("/subscription",
 
 router.patch("/avatars",
 	authenticate,
+	validation(schemas.avatarSchema),
 	upload.single("avatar"),
 	ctrlWrapper(ctrl.updateAvatar));
 

@@ -5,9 +5,6 @@ const gravatar = require("gravatar");
 
 const register = async (req, res) => {
 	const { email, password, subscription } = req.body;
-	if (typeof email !=="string" || typeof subscription !=="string") {
-		throw RequestError(409, "Email and Subscription should be string type");
-	}
 	const user = await User.findOne({ email });
 	if (user) {
 		throw RequestError(409, "Email in use");
