@@ -1,10 +1,11 @@
 const { Schema, model } = require("mongoose");
 const Joi = require('joi');
-Joi.image = require("joi-image-extension");
+//Joi.image = require("joi-image-extension");
 
 const { RequestError, handleSaveErrors } = require("../../helpers");
 
-const emailRegex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+//const emailRegex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const userSchema = new Schema(
 	{
@@ -32,7 +33,16 @@ const userSchema = new Schema(
 		avatarURL: {
 			type: String,
 			require: true,
+		},
+		verify: {
+			type: Boolean,
+			default: false,
+		},
+		verificationToken: {
+			type: String,
+			default: ""
 		}
+
 	},
 	{ versionKey: false, timestamps: true }
 );
@@ -87,11 +97,16 @@ const avatarSchema = Joi.object({
 		)
 }) 
 
+const verifyEmail = Joi.object({
+	email: Joi.string().pattern(emailRegex).required(),
+})
+
 const schemas = {
 	registerSchema,
 	loginSchema,
 	updateSubscription,
 	avatarSchema,
+	verifyEmail
 }
 
 const User = model("user", userSchema);
