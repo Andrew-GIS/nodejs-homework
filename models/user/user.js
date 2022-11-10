@@ -1,10 +1,10 @@
 const { Schema, model } = require("mongoose");
 const Joi = require('joi');
+Joi.image = require("joi-image-extension");
 
 const { RequestError, handleSaveErrors } = require("../../helpers");
 
 const emailRegex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
-//https://www.w3resource.com/javascript/form/email-validation.php
 
 const userSchema = new Schema(
 	{
@@ -29,6 +29,10 @@ const userSchema = new Schema(
 			type: String,
 			default: "",
 		},
+		avatarURL: {
+			type: String,
+			require: true,
+		}
 	},
 	{ versionKey: false, timestamps: true }
 );
@@ -36,7 +40,6 @@ const userSchema = new Schema(
 userSchema.post("save", handleSaveErrors);
 
 const registerSchema = Joi.object({
-	//email: Joi.string().pattern(emailRegex).required(),
 	email: Joi.string()
 		.trim()
 		.pattern(emailRegex)
@@ -75,10 +78,20 @@ const loginSchema = Joi.object({
 	password: Joi.string().min(6).required(),
 })
 
+const avatarSchema = Joi.object({
+	avatar: Joi.any().error(
+			RequestError(
+				400,
+				`Image format shoud be: "jpeg", "png" or "img"`
+			)
+		)
+}) 
+
 const schemas = {
 	registerSchema,
 	loginSchema,
 	updateSubscription,
+	avatarSchema,
 }
 
 const User = model("user", userSchema);

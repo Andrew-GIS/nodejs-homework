@@ -10,7 +10,8 @@ const updateSubscribeStatus = async (req, res) => {
 		throw RequestError(404, `user with ${_id} not found`);
 	}
 	res.json({
-		message: `Subscription type successfully changed from ${prevSubscription} to ${req.body.subscription}`
+		message: `Subscription type successfully changed from ${prevSubscription} to ${req.body.subscription}`,
+		result,
 	})
 }
 
