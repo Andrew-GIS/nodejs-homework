@@ -4,16 +4,7 @@ const { BASE_URL } = process.env;
 
 const resendEmail = async (req, res) => {
 	const { email } = req.body;
-	if (!email) {
-		throw RequestError(400, "missing required field email")
-	}
 	const user = await User.findOne({ email });
-	if (!user) {
-		throw RequestError(404)
-	}
-	if (user.verify) {
-		throw RequestError(400, "Verification has already been passed")
-	}
 
 	const mail = {
 		to: email,
@@ -22,7 +13,7 @@ const resendEmail = async (req, res) => {
 	}
 	await sendEmail(mail);
 
-	res.json({
+	res.status(200).json({
 		message: "Email send seccess"
 	})
 }
