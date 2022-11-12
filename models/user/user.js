@@ -1,10 +1,9 @@
 const { Schema, model } = require("mongoose");
 const Joi = require('joi');
-Joi.image = require("joi-image-extension");
 
 const { RequestError, handleSaveErrors } = require("../../helpers");
 
-const emailRegex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const userSchema = new Schema(
 	{
@@ -32,7 +31,16 @@ const userSchema = new Schema(
 		avatarURL: {
 			type: String,
 			require: true,
+		},
+		verify: {
+			type: Boolean,
+			default: false,
+		},
+		verificationToken: {
+			type: String,
+			required: [true, "Verify token is required"],
 		}
+
 	},
 	{ versionKey: false, timestamps: true }
 );
@@ -87,11 +95,26 @@ const avatarSchema = Joi.object({
 		)
 }) 
 
+const verifyEmailSchema = Joi.object({
+	email: Joi.string().pattern(emailRegex).required().error(
+			RequestError(
+				400,
+				"Missing required field email"
+			)
+		),
+})
+
+const verificationTokenSchema = Joi.object({
+	verificationToken: Joi.string()
+})
+
 const schemas = {
 	registerSchema,
 	loginSchema,
 	updateSubscription,
 	avatarSchema,
+	verifyEmailSchema,
+	verificationTokenSchema,
 }
 
 const User = model("user", userSchema);

@@ -1,5 +1,5 @@
 const express = require("express");
-const { validation, authenticate, upload } = require("../../middlewares");
+const { validation, validationParams, authenticate, upload } = require("../../middlewares");
 const { ctrlWrapper } = require("../../helpers");
 const { schemas } = require("../../models/user/user");
 const ctrl = require('../../controllers/auth');
@@ -9,6 +9,14 @@ const router = express.Router();
 router.post('/register',
 	validation(schemas.registerSchema),
 	ctrlWrapper(ctrl.register));
+
+router.get("/verify/:verificationToken",
+	validationParams(schemas.verificationTokenSchema),
+	ctrlWrapper(ctrl.verify));
+
+router.post("/verify",
+	validation(schemas.verifyEmail),
+	ctrlWrapper(ctrl.resendEmail));
 
 router.post("/login",
 	validation(schemas.loginSchema),
